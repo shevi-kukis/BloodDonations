@@ -7,9 +7,9 @@ namespace blood_donations.Servies
 {
     public class PatientService : IPatientService
     {
-        readonly IPatientRepository _patientRepository;
+        readonly IRepository<Patient> _patientRepository;
 
-        public PatientService(IPatientRepository repository)
+        public PatientService(IRepository<Patient> repository)
         {
             _patientRepository = repository;
         }

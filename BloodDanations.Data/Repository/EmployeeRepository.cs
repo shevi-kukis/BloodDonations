@@ -7,54 +7,58 @@ using System;
 
 namespace blood_donations.Servies
 {
-    public class EmployeeRepository:IEmployeeRepository
+    public class EmployeeRepository:IRepository<Employee>
     {
-        readonly DataContext<Employee> _dataContext;
-        public EmployeeRepository(DataContext<Employee> dataContext)
+        readonly DataContext _dataContext;
+        public EmployeeRepository(DataContext dataContext)
         {
             _dataContext = dataContext;
         }
 
         public List<Employee> GetServies()
         {
-            return _dataContext.data;
+            return _dataContext.employees.ToList();
         }
         public Employee GetByIdService(int id)
         {
-            for (int i = 0; i < _dataContext.data.Count; i++)
-            {
-                if (_dataContext.data[i].Id==id)
-                    return _dataContext.data[i];
-            }
-            return default(Employee);
+            return _dataContext.employees.Where(d => d.Id == id).FirstOrDefault();
+
         }
         public bool PostServies(Employee e)
         {
-            _dataContext.data.Add(e);
-            return true;
+            _dataContext.employees.Add(e);
+                return _dataContext.SaveChanges() > 0;
+
         }
         public bool PutServies(int id,Employee employee)
         {
-            foreach (Employee e in _dataContext.data)
+            foreach (Employee e in _dataContext.employees)
             {
                 if (e.Id ==id)
                 {
                     
                     e.employeeRank = employee.employeeRank;
-                    e.DateOfBegin = employee.DateOfBegin;
-                    e.BirthDate = employee.BirthDate;
+                  //  e.DateOfBegin = employee.DateOfBegin;
+                   // e.BirthDate = employee.BirthDate;
                     e.FirstNameEmployee = employee.FirstNameEmployee;
                     e.LastNameEmployee = employee.LastNameEmployee;
                     e.EmailEmployee = employee.EmailEmployee;
                     e.EmployeeId = employee.EmployeeId;
-                    return true;
+                   
                 }
             }
-            return false;
+            return _dataContext.SaveChanges() > 0;
+
         }
         public bool DeleteServies(int id)
         {
-            return _dataContext.data.Remove(_dataContext.data.FirstOrDefault(e => e.Id == id));
+            var donor = _dataContext.employees.FirstOrDefault(e => e.Id == id);
+            if (donor != null)
+            {
+                _dataContext.employees.Remove(donor);
+                return _dataContext.SaveChanges() > 0;
+            }
+            return false;
         }
     }
 }

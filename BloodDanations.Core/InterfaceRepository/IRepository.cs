@@ -8,18 +8,20 @@ using System.Threading.Tasks;
 
 namespace BloodDanations.Core.InterfaceRepository
 {
-    public interface IDonorRepository
+
+    public interface IRepository<T> where T : class
     {
-        List<Donor> GetServies();
 
-        Donor GetByIdService(int id);
+        
+            List<T> GetServies();
 
+            T GetByIdService(int id);
 
-        bool PostServies(Donor d);
+            bool PostServies(T item);
 
-        bool PutServies(int id, Donor dose);
+            bool PutServies(int id, T item);
 
-        bool DeleteServies(int id);
+            bool DeleteServies(int id);
         
     }
 }

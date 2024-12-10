@@ -2,6 +2,7 @@
 using blood_donations.Subjects;
 using BloodDanations.Core.InterfaceRepository;
 using BloodDanations.Data.Data;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -11,57 +12,61 @@ using System.Threading.Tasks;
 
 namespace BloodDanations.Data.Repository
 {
-    public class DonorRepository : IDonorRepository
+    public class DonorRepository : IRepository<Donor>
     {
-        readonly DataContext<Donor> _dataContext;
-        public DonorRepository(DataContext<Donor> dataContext)
+        readonly DataContext _dataContext;
+        public DonorRepository(DataContext dataContext)
         {
             _dataContext = dataContext;
         }
 
         public bool DeleteServies(int id)
         {
-            _dataContext.data.Remove(_dataContext.data.FirstOrDefault(d => d.Id == id));
-            return _dataContext.SaveData(_dataContext.data);
+            var donor = _dataContext.Donor.FirstOrDefault(e => e.Id == id);
+            if (donor != null)
+            {
+                _dataContext.Donor.Remove(donor);
+                return _dataContext.SaveChanges() > 0;
+            }
+            return false;
         }
 
         public Donor GetByIdService(int id)
         {
-            return _dataContext.data.Where(d => d.Id == id).FirstOrDefault();
+            return _dataContext.Donor.Where(d => d.Id == id).FirstOrDefault();
         }
 
         public List<Donor> GetServies()
         {
-            return _dataContext.data;
+            return _dataContext.Donor.ToList();
         }
 
-        public bool PostServies(Donor d)
-        {
-            _dataContext.data.Add(d);
-             _dataContext.SaveData(_dataContext.data);
-            return true;
-        }
+            public bool PostServies(Donor item)
+            {
+                _dataContext.Donor.Add(item);
+                return _dataContext.SaveChanges() > 0; 
+            }
 
-        public bool PutServies(int id, Donor donor)
+        public bool PutServies(int id, Donor item)
         {
-            foreach (Donor d in _dataContext.data)
+            foreach (Donor d in _dataContext.Donor)
             {
                 if (d.Id == id)
                 {
-                    d.IdDonor = donor.IdDonor;
-                    d.LastNameDonor = donor.LastNameDonor;
-                    d.FirstNameDonor = donor.FirstNameDonor;
-                   // d.EmailDonor = donor.EmailDonor;
-                   // d.AddressDonor = donor.AddressDonor;
-                   d.BirthDate = donor.BirthDate;
-                   // d.sex = donor.sex;
-                   // d.Origin = donor.Origin;
-                   // d.healthFund = donor.healthFund;
-                     _dataContext.SaveData(_dataContext.data);
-                    return true;
+                    d.IdDonor = item.IdDonor;
+                    d.LastNameDonor = item.LastNameDonor;
+                    d.FirstNameDonor = item.FirstNameDonor;
+                    d.EmailDonor = item.EmailDonor;
+                    d.AddressDonor = item.AddressDonor;
+                   //d.BirthDate = item.BirthDate;
+                    d.sex = item.sex;
+                    d.Origin = item.Origin;
+                   d.healthFund = item.healthFund;
+
+                  
                 }
             }
-            return false;
+            return _dataContext.SaveChanges() > 0;
         }
     }
 }

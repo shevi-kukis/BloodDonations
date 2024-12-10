@@ -8,9 +8,9 @@ namespace blood_donations.Servies
 {
     public class CompatibilityCheckServies:ICompatibilityCheckService
     {
-        readonly ICompatibilityCheckRepository _CompatibilityCheckRepository;
+        readonly IRepository <CompatibilityCheck> _CompatibilityCheckRepository;
 
-        public CompatibilityCheckServies(ICompatibilityCheckRepository repository)
+        public CompatibilityCheckServies(IRepository<CompatibilityCheck> repository)
         {
             _CompatibilityCheckRepository = repository;
         }

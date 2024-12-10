@@ -8,9 +8,9 @@ namespace blood_donations.Servies
 {
     public class EmployeeService : IEmployeeService
     {
-        readonly IEmployeeRepository _employeeRepository;
+        readonly IRepository<Employee> _employeeRepository;
 
-        public EmployeeService(IEmployeeRepository repository)
+        public EmployeeService(IRepository<Employee> repository)
         {
             _employeeRepository = repository;
         }

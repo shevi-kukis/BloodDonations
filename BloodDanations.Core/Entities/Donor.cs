@@ -1,5 +1,7 @@
 ﻿
 
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace blood_donations.Subjects
 {
     public enum Sex {Male,Female }
@@ -14,20 +16,20 @@ namespace blood_donations.Subjects
         public string LastNameDonor { get; set; }
 
         public string ?IdDonor { get; set; }
-
-        public DateOnly BirthDate { get; set; }
-
-        //public Sex ?sex { get; set; }
-
-        //public string ?Origin { get; set; }
-
-        //public HealthFund? healthFund { get; set; }
-
-        //public string ? EmailDonor { get; set; }
-
-        //public string? AddressDonor { get; set; }
       
+        //public DateTime BirthDate { get; set; }
+
+        public Sex ?sex { get; set; }
+
+        public string ?Origin { get; set; }
+
+       public HealthFund? healthFund { get; set; }
+
+        public string ? EmailDonor { get; set; }
+
+        public string? AddressDonor { get; set; }
+     
     }
- 
+
 
 }

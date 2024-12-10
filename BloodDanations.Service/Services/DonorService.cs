@@ -12,9 +12,9 @@ namespace BloodDanations.Service.Services
 {
     public class DonorService : IDonorService
     {
-        readonly IDonorRepository _donorRepository;
+        readonly IRepository<Donor> _donorRepository;
 
-        public DonorService(IDonorRepository donorRepository)
+        public DonorService(IRepository<Donor> donorRepository)
         {
             _donorRepository = donorRepository;
         }

@@ -8,9 +8,9 @@ namespace blood_donations.Servies
 {
     public class BloodDoseService:IBloodDoseService
     {
-        readonly IBloodDoseRepository _BloodDoseRepository;
+        readonly IRepository<BloodDose> _BloodDoseRepository;
 
-        public BloodDoseService(IBloodDoseRepository repository)
+        public BloodDoseService(IRepository<BloodDose> repository)
         {
             _BloodDoseRepository = repository;
         }

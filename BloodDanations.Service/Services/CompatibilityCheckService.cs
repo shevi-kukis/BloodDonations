@@ -6,17 +6,25 @@ using System.Drawing;
 
 namespace blood_donations.Servies
 {
-    public class CompatibilityCheckServies:ICompatibilityCheckService
+    public class CompatibilityCheckServies : ICompatibilityCheckService
     {
-        readonly IRepository <CompatibilityCheck> _CompatibilityCheckRepository;
+        readonly IRepository<CompatibilityCheck> _CompatibilityCheckRepository;
+        readonly IRepositoryManager _donorManager;
 
-        public CompatibilityCheckServies(IRepository<CompatibilityCheck> repository)
+
+        public CompatibilityCheckServies(IRepository<CompatibilityCheck> repository, IRepositoryManager donorManager)
         {
             _CompatibilityCheckRepository = repository;
+            _donorManager = donorManager;
         }
         public bool DeleteServies(int id)
         {
-            return _CompatibilityCheckRepository.DeleteServies(id);
+            if (_CompatibilityCheckRepository.DeleteServies(id))
+            {
+                _donorManager.Save();
+                return true;
+            }
+            return false;
         }
 
         public CompatibilityCheck GetByIdService(int id)
@@ -29,16 +37,18 @@ namespace blood_donations.Servies
             return _CompatibilityCheckRepository.GetServies();
         }
 
-        public bool PostServies(CompatibilityCheck d)
+        public CompatibilityCheck PostServies(CompatibilityCheck d)
         {
-            return _CompatibilityCheckRepository.PostServies(d);
-
-            return true;
+            CompatibilityCheck c= _CompatibilityCheckRepository.PostServies(d);
+            _donorManager.Save();
+            return c;
         }
 
-        public bool PutServies(int id, CompatibilityCheck d)
+        public CompatibilityCheck PutServies(int id, CompatibilityCheck d)
         {
-            return _CompatibilityCheckRepository.PutServies(id, d);
+            CompatibilityCheck c= _CompatibilityCheckRepository.PutServies(id, d);
+            _donorManager.Save();
+            return c;
         }
     }
 }

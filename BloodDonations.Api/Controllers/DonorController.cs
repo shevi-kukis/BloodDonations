@@ -39,23 +39,18 @@ namespace BloodDonations.Api.Controllers
         [HttpPost]
         public ActionResult<bool> Post([FromBody] Donor value)
         {
-            Donor result = _donorService.GetByIdService(value.Id);
+            Donor result = _donorService.PostServies(value);
             if (result != null)
-                return BadRequest(false);
-            var res = _donorService.PostServies(value);
-            if (res == false)
-                return BadRequest(false);
-            return true;
+                return true;
+                return BadRequest(value);
+          
         }
 
         // PUT api/<DonorsController>/5
         [HttpPut("{id}")]
-        public ActionResult<bool> Put(int id, [FromBody] Donor value)
+        public ActionResult<Donor> Put(int id, [FromBody] Donor value)
         {
-            var res = _donorService.PutServies(id, value);
-            if (res == false)
-                return BadRequest(false);
-            return true;
+        return _donorService.PutServies(id, value);
         }
 
         // DELETE api/<DonorsController>/5

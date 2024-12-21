@@ -14,9 +14,9 @@ namespace BloodDanations.Core.InterfaceRepository
         BloodDose GetByIdService(int id);
 
 
-        bool PostServies(BloodDose d);
+        BloodDose PostServies(BloodDose d);
 
-        bool PutServies(int id, BloodDose dose);
+        BloodDose PutServies(int id, BloodDose dose);
 
         bool DeleteServies(int id);
     }

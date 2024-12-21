@@ -1,5 +1,5 @@
 ﻿using blood_donations.Entities;
-using blood_donations.Servies;
+
 using blood_donations.Subjects;
 using BloodDanations.Core.IcoinService;
 using BloodDanations.Core.InterfaceRepository;
@@ -41,12 +41,15 @@ namespace blood_donations.Controllers
         [HttpPost]
         public ActionResult<bool> Post([FromBody] Employee value)
         {
-            return _employeeService.PostServies(value);
+            Employee result = _employeeService.PostServies(value);
+            if (result != null)
+                return true;
+            return BadRequest(value);
         }
 
         // PUT api/<EmployeesController>/5
         [HttpPut("{id}")]
-        public ActionResult<bool> Put(int id,[FromBody] Employee value)
+        public ActionResult<Employee> Put(int id,[FromBody] Employee value)
         {
             return _employeeService.PutServies(id,value);
         }

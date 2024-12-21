@@ -13,14 +13,21 @@ namespace BloodDanations.Service.Services
     public class DonorService : IDonorService
     {
         readonly IRepository<Donor> _donorRepository;
+        readonly IRepositoryManager _donorManager;
 
-        public DonorService(IRepository<Donor> donorRepository)
+        public DonorService(IRepository<Donor> donorRepository,IRepositoryManager donorManager)
         {
-            _donorRepository = donorRepository;
+            _donorManager= donorManager;
+            _donorRepository= donorRepository;
         }
         public bool DeleteServies(int id)
         {
-          return   _donorRepository.DeleteServies(id);
+          if(_donorRepository.DeleteServies(id))
+            {
+                _donorManager.Save();
+                return true;
+            }
+          return false;
         }
 
         public Donor GetByIdService(int id)
@@ -33,20 +40,25 @@ namespace BloodDanations.Service.Services
            return _donorRepository.GetServies();
         }
 
-        public bool PostServies(Donor d)
+        public Donor PostServies(Donor d)
         {
            TzValid tzValid = new TzValid();
             ErrorTZ errorTZ;
             if(tzValid.ISOK(d.IdDonor,out errorTZ))
             {
-            return _donorRepository.PostServies(d);
+
+                Donor donor = _donorRepository.PostServies(d);
+                _donorManager.Save();
+                return donor;
             }
-            return false;
+            return null;
         }
 
-        public bool PutServies(int id, Donor d)
+        public Donor PutServies(int id, Donor d)
         {
-         return _donorRepository.PutServies(id, d); 
+         Donor d1= _donorRepository.PutServies(id,d);
+            _donorManager.Save();
+            return d1;
         }
 
     }

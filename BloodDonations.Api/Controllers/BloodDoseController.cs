@@ -1,7 +1,8 @@
 ﻿using blood_donations.Entities;
-using blood_donations.Servies;
+
 using BloodDanations.Core.IcoinService;
 using BloodDanations.Core.InterfaceRepository;
+using BloodDanations.Service.Services;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -41,12 +42,16 @@ namespace blood_donations.Controllers
         [HttpPost]
         public ActionResult<bool> Post([FromBody] BloodDose value)
         {
-            return Ok(_bloodDoseService.PostServies(value)) ;
+            BloodDose result = _bloodDoseService.PostServies(value);
+            if (result != null)
+                return true;
+            return BadRequest(value);
+
         }
 
         // PUT api/<BloodDoseController>/5
         [HttpPut("{id}")]
-        public ActionResult<bool> Put( int id,[FromBody] BloodDose value)
+        public ActionResult<BloodDose> Put( int id,[FromBody] BloodDose value)
         {
             return _bloodDoseService.PutServies(id, value);
         }

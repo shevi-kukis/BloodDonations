@@ -9,14 +9,21 @@ namespace blood_donations.Servies
     public class EmployeeService : IEmployeeService
     {
         readonly IRepository<Employee> _employeeRepository;
+        readonly IRepositoryManager _donorManager;
 
-        public EmployeeService(IRepository<Employee> repository)
+        public EmployeeService(IRepository<Employee> repository, IRepositoryManager donorManager)
         {
             _employeeRepository = repository;
+            _donorManager = donorManager;
         }
         public bool DeleteServies(int id)
         {
-            return _employeeRepository.DeleteServies(id);
+            if (_employeeRepository.DeleteServies(id))
+            {
+                _donorManager.Save();
+                return true;
+            }
+            return false;
         }
 
         public Employee GetByIdService(int id)
@@ -29,20 +36,24 @@ namespace blood_donations.Servies
             return _employeeRepository.GetServies();
         }
 
-        public bool PostServies(Employee d)
+        public Employee PostServies(Employee d)
         {
             TzValid tzValid = new TzValid();
             ErrorTZ errorTZ;
             if (tzValid.ISOK(d.EmployeeId, out errorTZ))
             {
-                return _employeeRepository.PostServies(d);
+               Employee e=  _employeeRepository.PostServies(d);
+                _donorManager.Save();
+                return e;
             }
-            return false;
+            return null;
         }
 
-        public bool PutServies(int id, Employee d)
+        public Employee PutServies(int id, Employee d)
         {
-            return _employeeRepository.PutServies(id, d);
+            Employee e= _employeeRepository.PutServies(id, d);
+            _donorManager.Save();
+            return e;
         }
     }
 }

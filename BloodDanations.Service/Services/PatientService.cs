@@ -8,14 +8,21 @@ namespace blood_donations.Servies
     public class PatientService : IPatientService
     {
         readonly IRepository<Patient> _patientRepository;
+        readonly IRepositoryManager _donorManager;
 
-        public PatientService(IRepository<Patient> repository)
+        public PatientService(IRepository<Patient> repository, IRepositoryManager donorManager)
         {
             _patientRepository = repository;
+            _donorManager = donorManager;
         }
         public bool DeleteServies(int id)
         {
-            return _patientRepository.DeleteServies(id);
+            if (_patientRepository.DeleteServies(id))
+            {
+                _donorManager.Save();
+                return true;
+            }
+            return false;
         }
 
         public Patient GetByIdService(int id)
@@ -28,20 +35,24 @@ namespace blood_donations.Servies
             return _patientRepository.GetServies();
         }
 
-        public bool PostServies(Patient d)
+        public Patient PostServies(Patient d)
         {
             TzValid tzValid = new TzValid();
             ErrorTZ errorTZ;
             if (tzValid.ISOK(d.IdPatient, out errorTZ))
             {
-                return _patientRepository.PostServies(d);
+               Patient p=  _patientRepository.PostServies(d);
+                _donorManager.Save();
+                return p;
             }
-            return false;
+            return null;
         }
 
-        public bool PutServies(int id, Patient d)
+        public Patient PutServies(int id, Patient d)
         {
-            return _patientRepository.PutServies(id, d);
+            Patient p=  _patientRepository.PutServies(id, d);
+            _donorManager.Save();
+            return p;
         }
     }
 }

@@ -6,17 +6,25 @@ using Coins.server.Service;
 
 namespace blood_donations.Servies
 {
-    public class BloodDoseService:IBloodDoseService
+    public class BloodDoseService : IBloodDoseService
     {
         readonly IRepository<BloodDose> _BloodDoseRepository;
+        readonly IRepositoryManager _donorManager;
 
-        public BloodDoseService(IRepository<BloodDose> repository)
+        public BloodDoseService(IRepository<BloodDose> repository, IRepositoryManager donorManager)
         {
             _BloodDoseRepository = repository;
+            _donorManager = donorManager;
         }
         public bool DeleteServies(int id)
         {
-            return _BloodDoseRepository.DeleteServies(id);
+            if (_BloodDoseRepository.DeleteServies(id))
+            {
+                _donorManager.Save();
+                return true;
+            }
+            return false;
+
         }
 
         public BloodDose GetByIdService(int id)
@@ -29,16 +37,18 @@ namespace blood_donations.Servies
             return _BloodDoseRepository.GetServies();
         }
 
-        public bool PostServies(BloodDose d)
+        public BloodDose PostServies(BloodDose d)
         {
-                return _BloodDoseRepository.PostServies(d);
-
-            return true;
+            BloodDose donor = _BloodDoseRepository.PostServies(d);
+            _donorManager.Save();
+            return donor;
         }
 
-        public bool PutServies(int id, BloodDose d)
+        public BloodDose PutServies(int id, BloodDose d)
         {
-            return _BloodDoseRepository.PutServies(id, d);
+            BloodDose b= _BloodDoseRepository.PutServies(id, d);
+            _donorManager.Save();
+            return b;
         }
     }
 }

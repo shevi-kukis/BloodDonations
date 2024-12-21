@@ -14,9 +14,9 @@ namespace BloodDanations.Core.IcoinService
 
         Donor GetByIdService(int id);
 
-        bool PostServies(Donor d);
+        Donor PostServies(Donor d);
 
-        bool PutServies(int id, Donor dose);
+        Donor PutServies(int id, Donor dose);
 
         bool DeleteServies(int id);
     }

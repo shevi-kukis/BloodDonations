@@ -1,5 +1,4 @@
-﻿using blood_donations.Entities;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -86,7 +85,13 @@ namespace BloodDanations.Data.Migrations
                     FirstNamePatient = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastNamePatient = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IdPatient = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    
+                    sex = table.Column<int>(type: "int", nullable: false),
+                    Origin = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    healthFund = table.Column<int>(type: "int", nullable: false),
+                    AddressPatient = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    levelOfUrgency = table.Column<int>(type: "int", nullable: false),
+                    bloodType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IdEmployee = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {

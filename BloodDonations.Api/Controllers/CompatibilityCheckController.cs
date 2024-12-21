@@ -1,5 +1,5 @@
 ﻿using blood_donations.Entities;
-using blood_donations.Servies;
+
 using BloodDanations.Core.InterfaceRepository;
 using Microsoft.AspNetCore.Mvc;
 
@@ -38,12 +38,15 @@ namespace blood_donations.Controllers
         [HttpPost]
         public ActionResult<bool> Post([FromBody] CompatibilityCheck c)
         {
-            return _compatibilityCheckService.PostServies(c);
+            CompatibilityCheck result = _compatibilityCheckService.PostServies(c);
+            if (result != null)
+                return true;
+            return BadRequest(c);
         }
 
         // PUT api/<Users>/5
         [HttpPut("{id}")]
-        public ActionResult<bool> Put(int id,CompatibilityCheck c)
+        public ActionResult<CompatibilityCheck> Put(int id,CompatibilityCheck c)
         {
             return _compatibilityCheckService.PutServies(id, c);
         }

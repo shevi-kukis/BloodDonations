@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BloodDanations.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20241209220021_MigrationName")]
+    [Migration("20241219183030_MigrationName")]
     partial class MigrationName
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -114,7 +114,15 @@ namespace BloodDanations.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<string>("AddressPatient")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("FirstNamePatient")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("IdEmployee")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -125,6 +133,23 @@ namespace BloodDanations.Data.Migrations
                     b.Property<string>("LastNamePatient")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Origin")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("bloodType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("healthFund")
+                        .HasColumnType("int");
+
+                    b.Property<int>("levelOfUrgency")
+                        .HasColumnType("int");
+
+                    b.Property<int>("sex")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

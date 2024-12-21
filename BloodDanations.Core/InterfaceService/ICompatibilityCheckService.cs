@@ -14,9 +14,9 @@ namespace BloodDanations.Core.InterfaceRepository
         CompatibilityCheck GetByIdService(int id);
 
 
-        bool PostServies(CompatibilityCheck d);
+        CompatibilityCheck PostServies(CompatibilityCheck d);
 
-        bool PutServies(int id, CompatibilityCheck dose);
+        CompatibilityCheck PutServies(int id, CompatibilityCheck dose);
 
         bool DeleteServies(int id);
     }

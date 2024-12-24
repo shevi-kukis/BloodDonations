@@ -7,10 +7,10 @@ namespace blood_donations.Servies
 {
     public class PatientService : IPatientService
     {
-        readonly IRepository<Patient> _patientRepository;
+        readonly IPatientRepository _patientRepository;
         readonly IRepositoryManager _donorManager;
 
-        public PatientService(IRepository<Patient> repository, IRepositoryManager donorManager)
+        public PatientService(IPatientRepository repository, IRepositoryManager donorManager)
         {
             _patientRepository = repository;
             _donorManager = donorManager;
@@ -32,14 +32,14 @@ namespace blood_donations.Servies
 
         public List<Patient> GetServies()
         {
-            return _patientRepository.GetServies();
+            return _patientRepository.GetFull().ToList() ;
         }
 
         public Patient PostServies(Patient d)
         {
             TzValid tzValid = new TzValid();
             ErrorTZ errorTZ;
-            if (tzValid.ISOK(d.IdPatient, out errorTZ))
+            if (tzValid.ISOK(d.Tz, out errorTZ))
             {
                Patient p=  _patientRepository.PostServies(d);
                 _donorManager.Save();

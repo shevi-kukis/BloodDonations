@@ -8,10 +8,10 @@ namespace blood_donations.Servies
 {
     public class BloodDoseService : IBloodDoseService
     {
-        readonly IRepository<BloodDose> _BloodDoseRepository;
+        readonly IBloodDoseRepository _BloodDoseRepository;
         readonly IRepositoryManager _donorManager;
 
-        public BloodDoseService(IRepository<BloodDose> repository, IRepositoryManager donorManager)
+        public BloodDoseService(IBloodDoseRepository repository, IRepositoryManager donorManager)
         {
             _BloodDoseRepository = repository;
             _donorManager = donorManager;
@@ -34,7 +34,7 @@ namespace blood_donations.Servies
 
         public List<BloodDose> GetServies()
         {
-            return _BloodDoseRepository.GetServies();
+            return _BloodDoseRepository.GetFull().ToList();
         }
 
         public BloodDose PostServies(BloodDose d)

@@ -29,9 +29,8 @@ namespace BloodDanations.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("IdDonor")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("DonorId")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsChecked")
                         .HasColumnType("bit");
@@ -45,6 +44,8 @@ namespace BloodDanations.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("DonorId");
+
                     b.ToTable("bloodDoses");
                 });
 
@@ -56,18 +57,23 @@ namespace BloodDanations.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("IdBloodeDose")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("IdPatient")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("BloodeDoseId")
+                        .HasColumnType("int");
 
                     b.Property<int>("NumNeedDose")
                         .HasColumnType("int");
 
+                    b.Property<int>("PatientId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("bloodDoseId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("PatientId");
+
+                    b.HasIndex("bloodDoseId");
 
                     b.ToTable("CompatibilityChecks");
                 });
@@ -84,15 +90,15 @@ namespace BloodDanations.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("EmployeeId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("FirstNameEmployee")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastNameEmployee")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Tz")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -116,15 +122,10 @@ namespace BloodDanations.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
                     b.Property<string>("FirstNamePatient")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("IdEmployee")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("IdPatient")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -133,6 +134,10 @@ namespace BloodDanations.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Origin")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Tz")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -150,6 +155,8 @@ namespace BloodDanations.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
 
                     b.ToTable("Patients");
                 });
@@ -172,14 +179,15 @@ namespace BloodDanations.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("IdDonor")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("LastNameDonor")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Origin")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Tz")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("healthFund")
@@ -191,6 +199,67 @@ namespace BloodDanations.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Donor");
+                });
+
+            modelBuilder.Entity("blood_donations.Entities.BloodDose", b =>
+                {
+                    b.HasOne("blood_donations.Subjects.Donor", "donor")
+                        .WithMany("BloodDoses")
+                        .HasForeignKey("DonorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("donor");
+                });
+
+            modelBuilder.Entity("blood_donations.Entities.CompatibilityCheck", b =>
+                {
+                    b.HasOne("blood_donations.Entities.Patient", "patient")
+                        .WithMany("compatibilityChecks")
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("blood_donations.Entities.BloodDose", "bloodDose")
+                        .WithMany("compatibilityChecks")
+                        .HasForeignKey("bloodDoseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("bloodDose");
+
+                    b.Navigation("patient");
+                });
+
+            modelBuilder.Entity("blood_donations.Entities.Patient", b =>
+                {
+                    b.HasOne("blood_donations.Entities.Employee", "employee")
+                        .WithMany("patients")
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("employee");
+                });
+
+            modelBuilder.Entity("blood_donations.Entities.BloodDose", b =>
+                {
+                    b.Navigation("compatibilityChecks");
+                });
+
+            modelBuilder.Entity("blood_donations.Entities.Employee", b =>
+                {
+                    b.Navigation("patients");
+                });
+
+            modelBuilder.Entity("blood_donations.Entities.Patient", b =>
+                {
+                    b.Navigation("compatibilityChecks");
+                });
+
+            modelBuilder.Entity("blood_donations.Subjects.Donor", b =>
+                {
+                    b.Navigation("BloodDoses");
                 });
 #pragma warning restore 612, 618
         }

@@ -8,11 +8,11 @@ namespace blood_donations.Servies
 {
     public class CompatibilityCheckServies : ICompatibilityCheckService
     {
-        readonly IRepository<CompatibilityCheck> _CompatibilityCheckRepository;
+        readonly ICompatibilityCheckRepository _CompatibilityCheckRepository;
         readonly IRepositoryManager _donorManager;
 
 
-        public CompatibilityCheckServies(IRepository<CompatibilityCheck> repository, IRepositoryManager donorManager)
+        public CompatibilityCheckServies(ICompatibilityCheckRepository repository, IRepositoryManager donorManager)
         {
             _CompatibilityCheckRepository = repository;
             _donorManager = donorManager;
@@ -34,7 +34,7 @@ namespace blood_donations.Servies
 
         public List<CompatibilityCheck> GetServies()
         {
-            return _CompatibilityCheckRepository.GetServies();
+            return _CompatibilityCheckRepository.GetFull().ToList();
         }
 
         public CompatibilityCheck PostServies(CompatibilityCheck d)

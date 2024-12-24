@@ -8,10 +8,10 @@ namespace blood_donations.Servies
 {
     public class EmployeeService : IEmployeeService
     {
-        readonly IRepository<Employee> _employeeRepository;
+        readonly IEmployeeRepository _employeeRepository;
         readonly IRepositoryManager _donorManager;
 
-        public EmployeeService(IRepository<Employee> repository, IRepositoryManager donorManager)
+        public EmployeeService(IEmployeeRepository repository, IRepositoryManager donorManager)
         {
             _employeeRepository = repository;
             _donorManager = donorManager;
@@ -40,7 +40,7 @@ namespace blood_donations.Servies
         {
             TzValid tzValid = new TzValid();
             ErrorTZ errorTZ;
-            if (tzValid.ISOK(d.EmployeeId, out errorTZ))
+            if (tzValid.ISOK(d.Tz, out errorTZ))
             {
                Employee e=  _employeeRepository.PostServies(d);
                 _donorManager.Save();

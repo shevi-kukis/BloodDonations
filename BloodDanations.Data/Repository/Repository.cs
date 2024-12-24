@@ -8,12 +8,14 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
-public class Repository<T> : IRepository<T> where T : class
+
+public class EmployeeRepository<T> : IRepository<T> where T : class
 {
-    private readonly DbSet<T> _dbSet;
+    protected readonly DbSet<T> _dbSet;
 
-    public Repository(DataContext context)
+    public EmployeeRepository(DataContext context)
     {
         _dbSet = context.Set<T>();
     }
@@ -37,6 +39,7 @@ public class Repository<T> : IRepository<T> where T : class
     public List<T> GetServies()
     {
         return _dbSet.ToList();
+       
     }
 
     public T? GetByIdService(int id)

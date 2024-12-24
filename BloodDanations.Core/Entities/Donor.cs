@@ -1,5 +1,7 @@
 ﻿
 
+using blood_donations.Entities;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace blood_donations.Subjects
@@ -9,13 +11,13 @@ namespace blood_donations.Subjects
     public enum HealthFund { Leumit,Macabi,Mehuchdet,Clalit}
     public class Donor
     {
-      
 
+        [Key]
         public int Id { get;  set; }
         public string FirstNameDonor { get; set; }
         public string LastNameDonor { get; set; }
 
-        public string ?IdDonor { get; set; }
+        public string Tz { get; set; }
       
         //public DateTime BirthDate { get; set; }
 
@@ -28,7 +30,9 @@ namespace blood_donations.Subjects
         public string ? EmailDonor { get; set; }
 
         public string? AddressDonor { get; set; }
-     
+
+        public List<BloodDose> BloodDoses { get; set; }
+
     }
 
 

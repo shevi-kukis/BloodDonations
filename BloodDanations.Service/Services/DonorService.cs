@@ -12,10 +12,10 @@ namespace BloodDanations.Service.Services
 {
     public class DonorService : IDonorService
     {
-        readonly IRepository<Donor> _donorRepository;
+        readonly IDonorRepository _donorRepository;
         readonly IRepositoryManager _donorManager;
 
-        public DonorService(IRepository<Donor> donorRepository,IRepositoryManager donorManager)
+        public DonorService(IDonorRepository donorRepository,IRepositoryManager donorManager)
         {
             _donorManager= donorManager;
             _donorRepository= donorRepository;
@@ -44,7 +44,7 @@ namespace BloodDanations.Service.Services
         {
            TzValid tzValid = new TzValid();
             ErrorTZ errorTZ;
-            if(tzValid.ISOK(d.IdDonor,out errorTZ))
+            if(tzValid.ISOK(d.Tz,out errorTZ))
             {
 
                 Donor donor = _donorRepository.PostServies(d);
